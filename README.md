@@ -12,6 +12,10 @@ A real-time multiplayer infinite Tic Tac Toe game built with Node.js, WebSocket,
 - **Anonymous Play**: No login required, just enter your name
 - **Responsive**: Works on desktop and mobile
 
+## Where to Play
+
+Check the game on https://hypertoe.onrender.com/
+
 ## Installation
 
 ### Standard Installation
@@ -83,10 +87,6 @@ http://localhost:3000
 - **Frontend**: Vanilla HTML, CSS, JavaScript
 - **Communication**: WebSocket for real-time bidirectional communication
 
-## Deployment
-
-1. **Environment Variables**: Set `PORT` if needed (defaults to 3000)
-
 ## License
 
-MIT
+MIT License - See LICENSE file for details
