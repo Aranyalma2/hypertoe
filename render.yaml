@@ -1,6 +1,6 @@
 services:
     - type: web
-      name: hypertoe-game-server
+      name: hypertoe
       env: node
       plan: free
       buildCommand: npm install
