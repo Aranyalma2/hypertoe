@@ -1,0 +1,15 @@
+{
+  "name": "hypertoe",
+  "version": "1.0.0",
+  "description": "HyperToe - Real-time multiplayer infinite Tic Tac Toe game",
+  "main": "backend/main.js",
+  "scripts": {
+    "start": "node backend/main.js"
+  },
+  "keywords": ["websocket", "multiplayer", "game", "tictactoe", "hypertoe"],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "ws": "^8.14.2"
+  }
+}
