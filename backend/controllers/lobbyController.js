@@ -363,10 +363,10 @@ class LobbyController {
 				} else {
 					if (wasPlayer) {
 						if (lobby.leader === clientData.id && lobby.players.length > 0) {
-						// Assign leader to random player
-						const randomIndex = Math.floor(Math.random() * lobby.players.length);
-						lobby.leader = lobby.players[randomIndex].id;
-						console.log("Leader left, new random leader assigned:", lobby.leader);
+							// Assign leader to random player
+							const randomIndex = Math.floor(Math.random() * lobby.players.length);
+							lobby.leader = lobby.players[randomIndex].id;
+							console.log("Leader left, new random leader assigned:", lobby.leader);
 						}
 
 						wsService.broadcastToLobby(lobby, {

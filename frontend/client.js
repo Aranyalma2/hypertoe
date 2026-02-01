@@ -71,7 +71,7 @@ class HyperToe {
 		canvas.width = window.innerWidth;
 		canvas.height = window.innerHeight;
 
-		const symbols = ["X", "O"];
+		const symbols = ["X", "O", "△", "◇", "★", "♦", "●", "■"];
 		const particles = [];
 		const gridSize = 100;
 
@@ -681,12 +681,12 @@ class HyperToe {
 
 	updateStartButton() {
 		if (this.isSpectator) return;
-		
+
 		const isLeader = this.currentLobby.leader === this.myPlayerId;
 		const startBtn = document.getElementById("startGameBtn");
-		
+
 		if (!startBtn) return;
-		
+
 		if (isLeader) {
 			const allReady = this.currentLobby.players.length >= 2 && this.currentLobby.players.every((p) => p.ready && p.symbol);
 			startBtn.textContent = "Start Game";
@@ -699,12 +699,12 @@ class HyperToe {
 
 	updateLeaderUI() {
 		if (this.isSpectator) return;
-		
+
 		const isLeader = this.currentLobby.leader === this.myPlayerId;
 		document.getElementById("updateSettingsBtn").style.display = isLeader ? "block" : "none";
 		document.getElementById("winLengthInput").disabled = !isLeader;
 		document.getElementById("maxPlayersInput").disabled = !isLeader;
-		
+
 		// Update start button text and state
 		this.updateStartButton();
 	}
@@ -813,7 +813,7 @@ class HyperToe {
 
 		const isLeader = !this.isSpectator && this.currentLobby.leader === this.myPlayerId;
 		document.getElementById("updateSettingsBtn").style.display = isLeader ? "block" : "none";
-		
+
 		// Show start button for all non-spectator players
 		const startBtn = document.getElementById("startGameBtn");
 		if (!this.isSpectator) {
