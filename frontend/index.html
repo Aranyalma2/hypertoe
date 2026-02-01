@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Real-time Multiplayer Infinite Tic-Tac-Toe game with customizable rules and infinite board. Play with friends or as a spectator.">
+  <meta name="keywords" content="Tic-Tac-Toe, Multiplayer, Real-time, Infinite Board, Custom Rules, Spectator Mode, Online Game">
+  <title>HyperToe - Multiplayer</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+  <!-- GitHub Link -->
+  <a href="https://github.com/Aranyalma2/hypertoe" target="_blank" class="github-corner">
+    <svg width="24" height="24" viewBox="0 0 16 16" fill="currentColor">
+      <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z" />
+    </svg>
+    <span>GitHub</span>
+  </a>
+
+  <div id="app">
+    <!-- Animated Background -->
+    <canvas id="backgroundCanvas" class="background-canvas"></canvas>
+
+    <!-- Home Screen -->
+    <div id="homeScreen" class="screen active">
+      <div class="container">
+        <h1>HyperToe</h1>
+        <p class="subtitle">Real-time Multiplayer Infinite Tic-Tac-Toe</p>
+
+        <div class="description-card">
+          <p>Experience the classic game reimagined on an infinite canvas! Play with 2-4 players in real-time, customize win conditions, and explore unlimited strategic possibilities.</p>
+          <div class="features">
+            <span class="feature-tag">Infinite Board</span>
+            <span class="feature-tag">2-4 Players</span>
+            <span class="feature-tag">Real-time Sync</span>
+            <span class="feature-tag">Custom Rules</span>
+          </div>
+        </div>
+
+        <div class="card">
+          <input type="text" id="usernameInput" placeholder="Enter your name" maxlength="20">
+          <button id="createLobbyBtn" class="btn btn-primary">Create Lobby</button>
+          <div class="divider">OR</div>
+          <input type="text" id="lobbyIdInput" placeholder="Enter Lobby ID" maxlength="6">
+          <div class="join-options">
+            <label class="checkbox-label">
+              <input type="checkbox" id="joinAsSpectatorCheckbox">
+              <span>Join as Spectator</span>
+            </label>
+          </div>
+          <button id="joinLobbyBtn" class="btn btn-secondary">Join Lobby</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Lobby Screen -->
+    <div id="lobbyScreen" class="screen">
+      <div class="container">
+        <h1>Game Lobby</h1>
+        <div class="card">
+          <div class="lobby-header">
+            <h2>Lobby ID: <span id="lobbyIdDisplay"></span></h2>
+            <button id="copyLobbyIdBtn" class="btn btn-small">Copy</button>
+          </div>
+
+          <div class="spectator-toggle-section">
+            <button id="toggleSpectatorBtn" class="btn btn-secondary">
+              <span id="spectatorBtnText">Become Spectator</span>
+            </button>
+          </div>
+
+          <div class="settings-section">
+            <h3>Game Settings</h3>
+            <div class="setting-row">
+              <label>Win Length:</label>
+              <input type="number" id="winLengthInput" min="3" max="10" value="3">
+            </div>
+            <div class="setting-row">
+              <label>Max Players:</label>
+              <select id="maxPlayersInput">
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4" selected>4</option>
+              </select>
+            </div>
+            <button id="updateSettingsBtn" class="btn btn-secondary" style="display: none;">Update Settings</button>
+          </div>
+
+          <div class="symbol-section" id="symbolSectionContainer">
+            <h3>Choose Your Symbol</h3>
+            <div id="symbolSelection" class="symbol-selection"></div>
+          </div>
+
+          <div class="players-section">
+            <h3>Players</h3>
+            <div id="playersList"></div>
+          </div>
+
+          <div class="spectators-section" id="spectatorsSection" style="display: none;">
+            <h3>Spectators</h3>
+            <div id="spectatorsList"></div>
+          </div>
+
+          <button id="readyBtn" class="btn btn-ready">Ready</button>
+          <button id="startGameBtn" class="btn btn-primary" style="display: none;" disabled>Start Game</button>
+          <button id="leaveLobbyBtn" class="btn btn-danger">Leave Lobby</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Game Screen -->
+    <div id="gameScreen" class="screen">
+      <div class="game-container">
+        <div class="game-header">
+          <div class="game-info">
+            <h2>HyperToe</h2>
+            <div id="turnInfo" class="turn-info"></div>
+            <div id="spectatorBadge" class="spectator-badge" style="display: none;">Spectating</div>
+          </div>
+          <div class="game-controls">
+            <button id="zoomInBtn" class="btn btn-small">Zoom +</button>
+            <button id="zoomOutBtn" class="btn btn-small">Zoom -</button>
+            <button id="resetViewBtn" class="btn btn-small">Center</button>
+            <button id="showLastMoveBtn" class="btn btn-small">Last Move</button>
+          </div>
+        </div>
+
+        <div class="players-bar">
+          <div id="gamePlayersList"></div>
+        </div>
+
+        <div id="gameBoard" class="game-board">
+          <canvas id="gridCanvas"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- Game Over Modal -->
+    <div id="gameOverModal" class="modal">
+      <div class="modal-content">
+        <h2 id="winnerText"></h2>
+        <button id="backToLobbyBtn" class="btn btn-primary">Back to Lobby</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="client.js"></script>
+</body>
+
+</html>
