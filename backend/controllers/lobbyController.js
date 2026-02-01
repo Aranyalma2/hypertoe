@@ -39,6 +39,44 @@ class LobbyController {
 			return;
 		}
 
+		// Check if this player already exists in the lobby (session restoration)
+		const existingPlayer = lobby.getPlayer(clientData.id);
+		const existingSpectator = lobby.getSpectator(clientData.id);
+
+		if (existingPlayer || existingSpectator) {
+			// Player is reconnecting - restore their session
+			if (existingPlayer) {
+				existingPlayer.ws = ws;
+				clientData.lobbyId = message.lobbyId;
+
+				wsService.sendToClient(ws, {
+					type: "lobbyJoined",
+					lobbyId: lobby.id,
+					lobby: lobby.toJSON(),
+					playerId: clientData.id,
+					isSpectator: false,
+					message: "Session restored",
+				});
+
+				console.log("Player session restored via joinLobby:", clientData.id);
+			} else if (existingSpectator) {
+				existingSpectator.ws = ws;
+				clientData.lobbyId = message.lobbyId;
+
+				wsService.sendToClient(ws, {
+					type: "lobbyJoined",
+					lobbyId: lobby.id,
+					lobby: lobby.toJSON(),
+					playerId: clientData.id,
+					isSpectator: true,
+					message: "Session restored",
+				});
+
+				console.log("Spectator session restored via joinLobby:", clientData.id);
+			}
+			return;
+		}
+
 		const isSpectator = message.asSpectator || false;
 
 		// Check if game is in progress and user wasn't part of it
@@ -325,7 +363,10 @@ class LobbyController {
 				} else {
 					if (wasPlayer) {
 						if (lobby.leader === clientData.id && lobby.players.length > 0) {
-							lobby.leader = lobby.players[0].id;
+						// Assign leader to random player
+						const randomIndex = Math.floor(Math.random() * lobby.players.length);
+						lobby.leader = lobby.players[randomIndex].id;
+						console.log("Leader left, new random leader assigned:", lobby.leader);
 						}
 
 						wsService.broadcastToLobby(lobby, {
